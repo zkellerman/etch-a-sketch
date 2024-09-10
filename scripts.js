@@ -3,7 +3,6 @@ const container = document.querySelector(".container");
 function updateGridSize(size) {
   while (container.firstChild) {
     container.removeChild(container.lastChild);
-    console.log('removed');
   }
 
   let totalSquares = size * size;
@@ -13,12 +12,19 @@ function updateGridSize(size) {
 
     // square size = (container width - (size * L&R 1px border)) / size
     let squareSize = (750 - (size * 2)) / size;
-    console.log(squareSize);
     square.style.height = `${squareSize}px`;
     square.style.width = `${squareSize}px`;
 
     square.addEventListener("mouseover", () => {
-      square.style.backgroundColor = getRandomColor();
+      if (square.style.backgroundColor === '')
+        square.style.backgroundColor = getRandomColor();
+
+      let opacity = parseFloat(square.style.opacity);
+      
+      if (isNaN(opacity)) opacity = 0.1
+      else if (opacity < 1) opacity += 0.1
+      
+      square.style.opacity = `${opacity}`;
     });
 
     container.appendChild(square);
